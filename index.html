@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SCAMPER Spinner</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('assets/background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+
+    #container {
+      position: relative;
+      width: 80vmin;
+      height: 80vmin;
+    }
+
+    #wheel {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    #spinButton {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: none;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #indicator {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-bottom: 30px solid red;
+      transform: translateX(-50%);
+      z-index: 20;
+    }
+
+    #question {
+      position: absolute;
+      bottom: -80px;
+      width: 100%;
+      text-align: center;
+      color: white;
+      font-size: 1.2em;
+      text-shadow: 1px 1px 3px black;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="indicator"></div>
+    <img src="assets/SCAMPER Wheel v1.png" id="wheel" />
+    <button id="spinButton">Go!</button>
+    <div id="question"></div>
+  </div>
+
+  <script>
+    const wheel = document.getElementById("wheel");
+    const spinButton = document.getElementById("spinButton");
+    const questionBox = document.getElementById("question");
+
+    const segments = [
+      "Swap / Substitute",
+      "Combine",
+      "Adapt",
+      "Modify / Magnify / Minimise",
+      "Put to another use",
+      "Eliminate",
+      "Reverse / Rearrange",
+      "Like"
+    ];
+
+    const scamperQuestions = {
+      "Swap / Substitute": [
+        "Could something be swapped for something else?",
+        "Could you replace one part of the prototype with another that works better?"
+      ],
+      "Combine": [
+        "Could something be mixed together?",
+        "Can we combine something to give it another use?"
+      ],
+      "Adapt": [
+        "Can you change or add something?",
+        "Can you adapt something for a different use?"
+      ],
+      "Modify / Magnify / Minimise": [
+        "Could you change the size of something?",
+        "What part could be bigger or smaller?"
+      ],
+      "Put to another use": [
+        "Can something be used for another purpose?",
+        "Can a part have more than 1 use?"
+      ],
+      "Eliminate": [
+        "Should something be removed?",
+        "Are there parts that are not needed?"
+      ],
+      "Reverse / Rearrange": [
+        "Can something be flipped or arranged differently?",
+        "Could something be used in a different way?"
+      ],
+      "Like": [
+        "What is a strength of the prototype?",
+        "What is something you like about it?"
+      ]
+    };
+
+    let spinning = false;
+    let currentDeg = 0;
+
+    spinButton.addEventListener("click", () => {
+      if (spinning) return;
+      spinning = true;
+      questionBox.textContent = "";
+      const extraSpins = 5 * 360;
+      const randomDeg = Math.floor(Math.random() * 360);
+      const finalDeg = currentDeg + extraSpins + randomDeg;
+
+      wheel.style.transform = `rotate(${finalDeg}deg)`;
+
+      setTimeout(() => {
+        const actualDeg = finalDeg % 360;
+        const segmentDeg = 360 / segments.length;
+        const index = Math.floor((360 - actualDeg + segmentDeg / 2) % 360 / segmentDeg);
+        const selected = segments[index];
+        const questions = scamperQuestions[selected];
+        const chosenQuestion = questions[Math.floor(Math.random() * questions.length)];
+        questionBox.textContent = `🧠 ${selected}: ${chosenQuestion}`;
+        spinning = false;
+        currentDeg = finalDeg;
+      }, 4000);
+    });
+  </script>
+</body>
+</html>
