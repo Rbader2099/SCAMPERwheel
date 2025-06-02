@@ -131,6 +131,55 @@
       background-size: contain;
       z-index: 100;
     }
+
+    /* Copyright button and modal styles */
+    #copyright-btn {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      width: 48px;
+      height: 48px;
+      background: url('assets/copyright.png') no-repeat center center;
+      background-size: contain;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 300;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      background-color: red; /* TEMP: for debugging */
+    }
+
+    #copyright-modal {
+      position: fixed;
+      left: 0; right: 0; top: 0; bottom: 0;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    #copyright-modal-content {
+      background: #222;
+      color: #fff;
+      padding: 2em 2.5em;
+      border-radius: 1em;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+      font-size: 1.1em;
+      position: relative;
+      min-width: 320px;
+      max-width: 90vw;
+      text-align: left;
+    }
+
+    #copyright-close {
+      position: absolute;
+      top: 0.5em;
+      right: 1em;
+      font-size: 2em;
+      color: #fff;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -145,6 +194,20 @@
   </div>
   <div id="question-container">
     <div id="question"></div>
+  </div>
+  <button id="copyright-btn" title="Attribution"></button>
+  <div id="copyright-modal" style="display:none;">
+    <div id="copyright-modal-content">
+      <span id="copyright-close">&times;</span>
+      <p>
+        Background by Reto Scheiwiller from Pixabay<br>
+        <a href="https://pixabay.com/illustrations/blueprint-engineering-technology-6944719/" target="_blank" style="color:#7ecfff;">https://pixabay.com/illustrations/blueprint-engineering-technology-6944719/</a><br><br>
+        Pointer by Samuel1983 from Pixabay<br>
+        <a href="https://pixabay.com/vectors/locator-map-indicator-1093167/" target="_blank" style="color:#7ecfff;">https://pixabay.com/vectors/locator-map-indicator-1093167/</a><br><br>
+        Sound effect by Victor Abdo from Pixabay<br>
+        <a href="https://pixabay.com/sound-effects/spin-232536/" target="_blank" style="color:#7ecfff;">https://pixabay.com/sound-effects/spin-232536/</a>
+      </p>
+    </div>
   </div>
 
   <script>
@@ -238,6 +301,26 @@
           segments
         });
       }, 4000);
+    });
+
+    // Copyright modal logic
+    const copyrightBtn = document.getElementById("copyright-btn");
+    const copyrightModal = document.getElementById("copyright-modal");
+    const copyrightClose = document.getElementById("copyright-close");
+
+    copyrightBtn.addEventListener("click", () => {
+      copyrightModal.style.display = "flex";
+    });
+
+    copyrightClose.addEventListener("click", () => {
+      copyrightModal.style.display = "none";
+    });
+
+    // Optional: close modal when clicking outside content
+    copyrightModal.addEventListener("click", (e) => {
+      if (e.target === copyrightModal) {
+        copyrightModal.style.display = "none";
+      }
     });
   </script>
 </body>
